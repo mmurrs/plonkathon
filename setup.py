@@ -76,7 +76,7 @@ class Setup(object):
         return ec_lincomb([(s, x) for s, x in zip(self.powers_of_x, coeffs)])
 
 
-    # # Generate the verification key for this program with the given setup
-    # def verification_key(self, pk: CommonPreprocessedInput) -> VerificationKey:
-    #     # Create the appropriate VerificationKey object
-    #     return NotImplemented
+    # Generate the verification key for this program with the given setup
+    def verification_key(self, pk: CommonPreprocessedInput) -> VerificationKey:
+        # Create the appropriate VerificationKey object
+        return NotImplemented
