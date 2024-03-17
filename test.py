@@ -19,7 +19,9 @@ def setup_test():
         list(map(Scalar, [1, 2, 3, 4, 5, 6, 7, 8])), Basis.LAGRANGE
     )
     program = Program(["c <== a * b"], 8)
+
     commitment = setup.commit(dummy_values)
+    print("Value of commitment: ", commitment)
     assert commitment == G1Point(
         (
             16120260411117808045030798560855586501988622612038310041007562782458075125622,
