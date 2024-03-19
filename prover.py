@@ -109,9 +109,9 @@ class Prover:
         B_Val = []
         C_Val = []
         for i in range(len(program.wires())):
-           A_Val.append(witness[program.wires()[i].L]) 
-           B_Val.append(witness[program.wires()[i].R])
-           C_Val.append(witness[program.wires()[i].O])
+           A_Val.append(Scalar(witness[program.wires()[i].L])) 
+           B_Val.append(Scalar(witness[program.wires()[i].R]))
+           C_Val.append(Scalar(witness[program.wires()[i].O]))
 
         print(A_Val)
         print(B_Val)
@@ -119,13 +119,13 @@ class Prover:
         # A_Val = witness[program.wires()[]]
         # Construct A, B, C Lagrange interpolation polynomials for
         # A_values, B_values, C_values
-
+        self.A = Polynomial(A_Val, Basis.LAGRANGE)
+        self.B = Polynomial(B_Val, Basis.LAGRANGE)
+        self.C = Polynomial(C_Val, Basis.LAGRANGE)
         # Compute a_1, b_1, c_1 commitments to A, B, C polynomials
-
-
-        # need to construct A, B, C with own pk
-        self.A = 0
-        print(self.A)
+        a_1 = setup.commit(self.A)
+        b_1 = setup.commit(self.B)
+        c_1 = setup.commit(self.C)
         # Sanity check that witness fulfils gate constraints
         assert (
             self.A * self.pk.QL
