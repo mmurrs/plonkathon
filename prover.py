@@ -105,13 +105,14 @@ class Prover:
         print(witness[program.wires()[0].L])
         print(witness[program.wires()[0].R])
         print(witness[program.wires()[0].O])
-        A_Val = [] 
-        B_Val = []
-        C_Val = []
+        # Init vectors so the length matches for later multiplication + guarantees indices
+        A_Val = [Scalar(0) for _ in range(group_order)] 
+        B_Val = [Scalar(0) for _ in range(group_order)]
+        C_Val = [Scalar(0) for _ in range(group_order)]
         for i in range(len(program.wires())):
-           A_Val.append(Scalar(witness[program.wires()[i].L])) 
-           B_Val.append(Scalar(witness[program.wires()[i].R]))
-           C_Val.append(Scalar(witness[program.wires()[i].O]))
+           A_Val[i] = (Scalar(witness[program.wires()[i].L])) 
+           B_Val[i] = (Scalar(witness[program.wires()[i].R]))
+           C_Val[i] = (Scalar(witness[program.wires()[i].O]))
 
         print(A_Val)
         print(B_Val)
