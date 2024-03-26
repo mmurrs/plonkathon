@@ -144,12 +144,27 @@ class Prover:
     def round_2(self) -> Message2:
         group_order = self.group_order
         setup = self.setup
-
+        print("Powers of X: ", setup.powers_of_x[1])
         # Using A, B, C, values, and pk.S1, pk.S2, pk.S3, compute
         # Z_values for permutation grand product polynomial Z
         #
         # Note the convenience function:
         #       self.rlc(val1, val2) = val_1 + self.beta * val_2 + gamma
+
+        # Accumulator
+        Z_values = [Scalar(1)]
+        roots_of_unity = Scalar.roots_of_unity(group_order)
+        # It's an array
+        for i in range(group_order):
+            Z_values.append(
+                Z_values[-1] 
+                * self.rlc(self.A.values[i], roots_of_unity[i])
+                * self.rlc(self.B.values[i], 2 * roots_of_unity[i])
+                * self.rlc(self.C.values[i], 3 * roots_of_unity[i]) 
+                / self.rlc(self.A.values[i], self.pk.S1.values[i])
+                / self.rlc(self.B.values[i], self.pk.S2.values[i])
+                / self.rlc(self.C.values[i], self.pk.S3.values[i])
+            )
 
         # Check that the last term Z_n = 1
         assert Z_values.pop() == 1
@@ -169,8 +184,9 @@ class Prover:
             ] == 0
 
         # Construct Z, Lagrange interpolation polynomial for Z_values
-        # Cpmpute z_1 commitment to Z polynomial
-
+        # Compute z_1 commitment to Z polynomial
+        Z = Polynomial(Z_values, Basis.LAGRANGE)
+        z_1 = setup.commit(Z)
         # Return z_1
         return Message2(z_1)
 
